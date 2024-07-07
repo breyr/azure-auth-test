@@ -8,16 +8,18 @@ const auth = useAuth();
 const items = reactive(new Array<WeatherForecast>());
 
 onMounted(async () => {
-    try {
-        const result = await axios.get<WeatherForecast[]>("/weatherforecast", {
-            headers: {
-                'Authorization': 'Bearer ' + auth.token
-            }
-        })
-        items.splice(0, items.length, ...result.data);
-    } catch (e) {
-        console.error(e);
-    }
+  // need to load auth state if the page gets refreshed
+  auth.loadAuthState();
+  try {
+      const result = await axios.get<WeatherForecast[]>("/weatherforecast", {
+          headers: {
+              'Authorization': 'Bearer ' + auth.token
+          }
+      })
+      items.splice(0, items.length, ...result.data);
+  } catch (e) {
+      console.error(e);
+  }
 })
 </script>
 

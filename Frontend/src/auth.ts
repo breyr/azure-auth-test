@@ -15,7 +15,11 @@ const config = {
 const data = reactive({
     account: null as AccountInfo | null,
     msalInstance: new PublicClientApplication(config),
-    token: ""
+    token: "",
+    loadAuthState() {
+        const savedToken = sessionStorage.getItem(`msal.token.keys.${import.meta.env.VITE_CLIENT_ID}`);
+        if (savedToken) this.token = savedToken;
+    },
 });
 
 export function useAuth() {
